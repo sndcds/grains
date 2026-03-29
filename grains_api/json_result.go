@@ -90,8 +90,6 @@ func (req *Request) write(statusCode int, status string, message string) {
 	req.GinContext.JSON(statusCode, resp)
 }
 
-// Public helpers
-
 func (r *Request) SetMeta(key string, value any) {
 	if r.Metadata == nil {
 		r.Metadata = make(map[string]interface{})
@@ -99,13 +97,11 @@ func (r *Request) SetMeta(key string, value any) {
 	r.Metadata[key] = value
 }
 
-// Success sends a 200 OK response
 func (req *Request) Success(statusCode int, data any, message string) {
 	req.Data = data
 	req.write(statusCode, "ok", message)
 }
 
-// SuccessNoData sends a 200 OK response with no data
 func (req *Request) SuccessNoData(statusCode int, message string) {
 	req.Data = nil
 	req.write(statusCode, "ok", message)
@@ -123,6 +119,17 @@ func (req *Request) NoContent(message string) {
 func (req *Request) Error(statusCode int, message string) {
 	req.Data = nil
 	req.write(statusCode, "error", message)
+}
+
+// Error sends an error response with given status code
+func (req *Request) ErrorWithKey(statusCode int, key string, message string) {
+	req.Data = key
+	req.write(statusCode, "error", message)
+}
+
+func (req *Request) InvalidJSONInput() {
+	req.Data = nil
+	req.Error(http.StatusBadRequest, "invalid json data")
 }
 
 func (req *Request) InternalServerError() {
