@@ -7,6 +7,12 @@ import (
 	"time"
 )
 
+type DirInfo struct {
+	FileCount    int    `json:"fileCount"`
+	DirSize      string `json:"dirSize"`
+	LastModified string `json:"lastModified"`
+}
+
 type MultiDirInfo struct {
 	Name         string `json:"name"`
 	FileCount    int    `json:"file_count"`
