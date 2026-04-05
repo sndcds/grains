@@ -83,3 +83,15 @@ func Uuidv7FromString(s string) ([16]byte, error) {
 
 	return u, errors.New("invalid UUIDv7 string")
 }
+
+func IsValidUuidv7(s string) bool {
+	u, err := Uuidv7FromString(s)
+	if err != nil {
+		return false
+	}
+
+	// UUID version is in the high nibble of byte 6
+	version := (u[6] & 0xF0) >> 4
+
+	return version == 7
+}

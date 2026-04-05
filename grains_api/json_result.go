@@ -60,7 +60,7 @@ type Response struct {
 	Service      string                 `json:"service"`
 	APIVersion   string                 `json:"api_version"`
 	ResponseType string                 `json:"response_type"`
-	Status       string                 `json:"status"`
+	Status       int                    `json:"status"`
 	Timestamp    string                 `json:"timestamp"`
 	Metadata     map[string]interface{} `json:"metadata,omitempty"`
 	Data         any                    `json:"data,omitempty"`
@@ -69,7 +69,7 @@ type Response struct {
 
 // Internal write method
 
-func (req *Request) write(statusCode int, status string, message string) {
+func (req *Request) write(statusCode int, message string) {
 	// Calculate response time and add to metadata
 	if req.Metadata == nil {
 		req.Metadata = make(map[string]interface{})
@@ -80,7 +80,7 @@ func (req *Request) write(statusCode int, status string, message string) {
 		Service:      cfg.ServiceName,
 		APIVersion:   cfg.APIVersion,
 		ResponseType: req.ResponseType,
-		Status:       status,
+		Status:       statusCode,
 		Timestamp:    time.Now().UTC().Format(cfg.TimeFormat),
 		Metadata:     req.Metadata,
 		Data:         req.Data, // already JSON-ready
@@ -99,32 +99,32 @@ func (r *Request) SetMeta(key string, value any) {
 
 func (req *Request) Success(statusCode int, data any, message string) {
 	req.Data = data
-	req.write(statusCode, "ok", message)
+	req.write(statusCode, message)
 }
 
 func (req *Request) SuccessNoData(statusCode int, message string) {
 	req.Data = nil
-	req.write(statusCode, "ok", message)
+	req.write(statusCode, message)
 }
 
 func (req *Request) NotFound(message string) {
-	req.write(http.StatusNotFound, "not found", message)
+	req.write(http.StatusNotFound, message)
 }
 
 func (req *Request) NoContent(message string) {
-	req.write(http.StatusNoContent, "no content", message)
+	req.write(http.StatusNoContent, message)
 }
 
 // Error sends an error response with given status code
 func (req *Request) Error(statusCode int, message string) {
 	req.Data = nil
-	req.write(statusCode, "error", message)
+	req.write(statusCode, message)
 }
 
 // Error sends an error response with given status code
 func (req *Request) ErrorWithKey(statusCode int, key string, message string) {
 	req.Data = key
-	req.write(statusCode, "error", message)
+	req.write(statusCode, message)
 }
 
 func (req *Request) InvalidJSONInput() {
