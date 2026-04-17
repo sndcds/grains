@@ -5,6 +5,7 @@ go 1.25
 require (
 	github.com/gin-gonic/gin v1.11.0
 	github.com/google/uuid v1.6.0
+	github.com/nbutton23/zxcvbn-go v0.0.0-20210217022336-fa2cb2858354
 )
 
 require (
