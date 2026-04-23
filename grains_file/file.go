@@ -1,6 +1,7 @@
 package grains_file
 
 import (
+	"bytes"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -89,4 +90,11 @@ func HumanSize(size int64) string {
 		exp++
 	}
 	return fmt.Sprintf("%.1f %cB", float64(size)/float64(div), "KMGTPE"[exp])
+}
+
+func IsAVIF(data []byte) bool {
+	if len(data) < 12 {
+		return false
+	}
+	return bytes.Contains(data[:32], []byte("avif"))
 }
