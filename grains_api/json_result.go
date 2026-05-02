@@ -121,6 +121,10 @@ func (req *Request) Error(statusCode int, message string) {
 	req.write(statusCode, message)
 }
 
+func (req *Request) Required(message string) {
+	req.Error(http.StatusBadRequest, message)
+}
+
 // Error sends an error response with given status code
 func (req *Request) ErrorWithKey(statusCode int, key string, message string) {
 	req.Data = key
