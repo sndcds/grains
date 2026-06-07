@@ -97,9 +97,13 @@ func (r *Request) SetMeta(key string, value any) {
 	r.Metadata[key] = value
 }
 
-func (req *Request) Success(statusCode int, data any, message string) {
+func (req *Request) Success(statusCode int, data any, message ...string) {
 	req.Data = data
-	req.write(statusCode, message)
+	msg := ""
+	if len(message) > 0 {
+		msg = message[0]
+	}
+	req.write(statusCode, msg)
 }
 
 func (req *Request) SuccessNoData(statusCode int, message string) {
