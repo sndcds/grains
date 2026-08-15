@@ -17,7 +17,7 @@ type DirInfo struct {
 type MultiDirInfo struct {
 	Name         string `json:"name"`
 	FileCount    int    `json:"file_count"`
-	DirSize      string `json:"dir_dize"`
+	DirSize      string `json:"dir_size"`
 	LastModified string `json:"last_modified"`
 }
 
