@@ -52,7 +52,7 @@ var commonPasswords = map[string]struct{}{
 func ValidatePassword(email, password string, minLength int) error {
 	// Password length is deliberately measured in bytes because bcrypt's
 	// maximum input size is 72 bytes.
-	if len(password) < minLength {
+	if utf8.RuneCountInString(password) < minLength {
 		return fmt.Errorf(
 			"%w: minimum length is %d characters",
 			ErrPasswordTooShort,
